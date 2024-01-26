@@ -281,6 +281,10 @@ void FlightTaskAuto::_prepareLandSetpoints()
 			sticks_xy.setZero();
 		}
 
+		if (PX4_ISFINITE(_dist_to_bottom)) {
+			max_speed = math::max(0.f, math::min(max_speed, (_dist_to_bottom - 0.5f) * 0.5f));
+		}
+
 		_stick_acceleration_xy.setVelocityConstraint(max_speed);
 		_stick_acceleration_xy.generateSetpoints(sticks_xy, _yaw, _land_heading, _position,
 				_velocity_setpoint_feedback.xy(), _deltatime);
